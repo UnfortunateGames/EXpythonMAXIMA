@@ -82,6 +82,8 @@ GOAsprite = [
     r"  (-_-)",
 ]
 
+# TODO Enemy sprites missing!
+
 rabbitSprite = []
 
 bedSprite = [
@@ -119,9 +121,32 @@ castSprite = [
 
 # Your Stats
 
+weapons = {
+    "bow": {
+        "level": 1,
+        "DMG": 2,
+        "critX": 2
+    },
+    "sword": {
+        "level": 1,
+        "DMG": 4,
+        "critX": 1
+    }
+}
+
+armor = {
+    "chainmail": {
+        "level": 1,
+        "AR": 2,
+        "block": 5
+    }
+}
+
+inventory = []
+
 curlocation = {"locNumber": 0, "locName": "towns"}
 
-BattleStats = {"HP": 15, "MP": 10, "DMG": 1, "AR": 1, "RNGDMG": 4}
+BattleStats = {"HP": 15, "MP": 10, "DMG": 1, "critX": 1, "AR": 1, "RNGDMG": 4, "block": 0}
 
 PersonalStats = {"Name": "Adventurer", "EXP": 0, "B": 0, "level": 1}
 
@@ -281,41 +306,45 @@ def drawTopBar():
     print(f"\tLV: {level} EXP: {exp}/{maxexp}\t\t\t MAXIMA\t  / /  :)")
     print(".-" * STwidth, end="", flush=True)
 
-def fakeLoadingStuff():
-    # TODO Think of a better loading screen
+def fakeLoadingScreen():
     clear()
-    print("Importing Libraries... ", end="", flush=True)
-    wait(1)
-    print("OK!")
-    wait(0.2)
-    print("Variables (Code-Related)... ", end="", flush=True)
+    print("\n")
+    print("Importing Libraries...")
+    print("\t>> OS ", end="", flush=True)
     wait(0.5)
-    print("OK!")
-    wait(0.2)
-    print("Variables (Your Stats)... ", end="", flush=True)
+    print("\t\t\t[ OK! ]")
+    print("\t>> Time ", end="", flush=True)
+    wait(0.8)
+    print("\t\t[ OK! ]")
+    print("\t>> Random ", end="", flush=True)
+    wait(0.6)
+    print("\t\t[ OK! ]")
+    wait(1)
+    print("Loading Variables...")
+    print("\t>> Code Related ", end="", flush=True)
     wait(0.7)
-    print("OK!")
-    wait(0.2)
-    print("Variables (Enemy Stats)... ", end="", flush=True)
-    wait(1.5)
-    print("OK!")
-    wait(0.2)
-    print("Essential Functions... ", end="", flush=True)
+    print("\t[ OK! ]")
+    print("\t>> Your Stats ", end="", flush=True)
+    wait(0.4)
+    print("\t\t[ OK! ]")
+    print("\t>> Enemy Stats ", end="", flush=True)
+    wait(1.4)
+    print("\t\t[ OK! ]")
     wait(1)
-    print("OK!")
-    wait(0.2)
-    print("Game Parts... ", end="", flush=True)
-    wait(1)
-    print("OK!")
-    wait(0.2)
-    print("Intro... ", end="", flush=True)
+    print("Loading Functions...")
+    print("\t>> Essental Functions ", end="", flush=True)
     wait(0.5)
-    print("OK!")
-    wait(0.2)
-    print("Other Stuff... ", end="", flush=True)
+    print("\t[ OK! ]")
+    print("\t>> Game Parts ", end="", flush=True)
+    wait(1)
+    print("\t\t[ OK! ]")
+    print("\t>> Intro ", end="", flush=True)
+    wait(0.3)
+    print("\t\t[ OK! ]")
+    print("\t>> Other Stuff ", end="", flush=True)
     wait(1.2)
-    print("OK!")
-    wait(0.5)
+    print("\t\t[ OK! ]")
+    wait(1)
 
 # Save Files
 
@@ -376,17 +405,17 @@ def HealStats():
 
 def getDream():
     # TODO Work on this feature!
-    print("\n\n\t\tYou walk through the Grasslands")
+    print("\n\n\t\t\tYou walk through the Grasslands")
     wait(2)
-    print("\t\tYou wonder...")
+    print("\t\t\tYou wonder...")
     wait(2)
-    print("\t\tIs killing every monster worth it?")
+    print("\t\t\tIs killing every monster worth it?")
     wait(2)
-    print("\t\tThen a revelation comes to your mind")
+    print("\t\t\tThen a revelation comes to your mind")
     wait(2)
-    print("\t\tWhat if...", end="", flush=True)
+    print("\t\t\tWhat if...", end="", flush=True)
     wait(1)
-    print("\t\tEverything is...")
+    print("\t\t\tEverything is...")
 
 def restPlace(n):
     if n == 0:
@@ -409,7 +438,7 @@ def restPlace(n):
             if chancetodream >= 13:
                 clear()
                 drawTopBar()
-                print("\n\n\t\t\tYou begin to dream...")
+                print("\n\n\t\tYou begin to dream...")
                 wait(2)
                 getDream()
                 wait(2)
@@ -421,8 +450,9 @@ def restPlace(n):
     if n == 2:
         pass
 
+
+
 def drawLocation():
-    # wild = locations["wild"]
     if curlocation["locName"] == "village":
         if curlocation["locNumber"] == 0:
             loc = towns["village"]
@@ -459,7 +489,7 @@ def drawLocation():
             # fetch quest
             pass
         elif x == "leave":
-            # leave things
+            # leave function
             pass
         else:
             print("\n\n\t\t\tThat's not a place...")
@@ -700,6 +730,6 @@ def initIntroSequence():
 
 # Run Code
 
-fakeLoadingStuff()
+fakeLoadingScreen()
 
 initIntroSequence()

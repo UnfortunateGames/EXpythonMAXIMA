@@ -1,24 +1,33 @@
-hi!!1!
+_.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.
 
-thanks for buying le game.
+EEE X X -.''.- M M  A  X X III M M  A
+EE   X  PYTHON MMM AAA  X   I  MMM AAA
+EEE X X -'..'- M M A A X X III M M A A
 
-No seriously, thanks.
-If you think its a virus or trojan, it is NOT.
-It is simply a python file, and my peanut brain cannot
-understand past the boundary of the language :)
+'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-
 
-Unless if you didn't get it from the official page which is
-my itch.io page, you're most definetely gonna get a virus
+Hi!!11
+Thanks for getting the game :D
 
-Read the guide before exploring around with the menu aspects
-of the game, I haven't added a tutorial for that yet, sorry!
+Seriously, thanks.
+I made this game to practice myself for
+my other Python Game gotoJAMBOREE
 
-Please support Karmatic, they have made a good game :)
-This game is also based on it!
+It's not a virus or trojan, I SWEAR.
+It is just a simple print() and input()
+game that my buttery smooth brain can
+comprehend. :)
 
-They have a Discord too, so check that out as well
+UnfortunateGames is my OFFICIAL github
+ElectricSplash is my OFFICIAL itch.io
 
-please dont sue me :( - ElectricSplash
+Please support Karmatic they made a cool
+game, and this game is based on it.
+
+They have a Discord too! So check them
+out and try their game before mine.
+
+Please don't sue me :( - ElectricSplash
 
 All rights go to Karmatic
 Based on the game Exp Minima
