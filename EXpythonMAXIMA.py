@@ -1,5 +1,12 @@
 # ex - PYTHON - maxima
 
+# Dear reader,
+# If you're reading this to optimize my code
+# I would be grateful you're here, cause this
+# code SUCKS! please help me out ok :)
+
+# sorry -ElectricSplash
+
 # Import Libraries
 
 import os
@@ -119,34 +126,51 @@ castSprite = [
     r" '  ''  ' ",
 ]
 
+shopSprite = [
+    r"._",
+    r"|\\   __()__",
+    r" \\\ |======|",
+    r" .\\\.  ||",
+    r" '-,o,' ||",
+    r"    \\  []"
+]
+
 # Your Stats
 
+# TODO Get more weapons
+
 weapons = {
-    "bow": {
-        "level": 1,
+    "Hbow": {
+        "name": "Hunter's Bow",
         "DMG": 2,
         "critX": 2
     },
-    "sword": {
-        "level": 1,
+    "Isword": {
+        "name":"Iron Sword",
         "DMG": 4,
         "critX": 1
     }
+
+    # TODO more weapons
 }
 
-armor = {
+armors = {
     "chainmail": {
-        "level": 1,
-        "AR": 2,
-        "block": 5
+        "name": "Chainmail",
+        "defense": 2,
+        "block": 2
     }
+
+    # TODO more armors
 }
+
+curGear = []
 
 inventory = []
 
 curlocation = {"locNumber": 0, "locName": "towns"}
 
-BattleStats = {"HP": 15, "MP": 10, "DMG": 1, "critX": 1, "AR": 1, "RNGDMG": 4, "block": 0}
+BattleStats = {"HP": 15, "MP": 10, "DMG": 2, "AR": 1, "RNGDMG": 3, "block": 2}
 
 PersonalStats = {"Name": "Adventurer", "EXP": 0, "B": 0, "level": 1}
 
@@ -252,6 +276,14 @@ towns = {
     },
 }
 
+shop = ["Hbow", "Isword", "chainmail"]
+
+# TODO add more weapons to add into here
+
+blacksmith = []
+
+royalarmory = []
+
 wild = {
     "Grasslands": {
         "enemies": [rabbit, deer, bandit],
@@ -259,9 +291,34 @@ wild = {
     },
     "Forest": {
         "enemies": [], 
-        "leave": ["Grasslands", "Caverns"]
+        "leave": ["Grasslands", "Deep Forest"]
     },
+    "Deep Forest": {
+        "enemies": [],
+        "leave": ["Forest", "Deeper Forest"]
+    },
+    "Deeper Forest": {
+        "enemies": [],
+        "leave": ["Deep Forest", "Forest Core"]
+    },
+    "Forest Core": {
+        "enemies": [],
+        "leave": ["Deeper Forest"]
+    }
 },
+
+# Dreams
+
+pathofminima1 = [
+    "\n\n\t\t\tYou Walk through the Grasslands...", 
+    "\t\t\tYou wonder...", 
+    "\t\t\tIs killing every monster worth it?", 
+    "\n\t\t\tThen a revelation comes to your mind",
+    "\t\t\tWhat if...",
+    "\t\t\tEverything is...",
+]
+
+dreamlist = [pathofminima1]
 
 # Functions
 
@@ -275,15 +332,39 @@ def wait(n):
 
 # Calculation
 
+def calculateDMG(target):
+    if curGear != []:
+        weapon = weapons[curGear[1]]
+        wpDMG = weapon["DMG"]
+        wpCRIT = weapon["critX"]
+    else:
+        wpDMG = 0
+        wpCRIT = 0
+    dealtdmg = BattleStats["DMG"] + random.randint(0, BattleStats["RNGDMG"]) + wpDMG
+    clear()
+    loadEnemy(target, 1)
+    if random.randint(0, 10) >= 7:
+        print("Critical Hit!")
+        dealtdmg = dealtdmg * round((wpCRIT + 1.5))
+        wait(2)
+    if target["AR"] > 0:
+        dealtdmg -= round(target["AR"] / 2)
+    target["HP"] -= int(dealtdmg)
+    print(f"You dealt {dealtdmg} damage to the Enemy!")
+    wait(1.5)
+    print(f"The enemy has {target['HP']} HP left!")
+    wait(2)
+
 def calculateStats():
     global LevelMaxStats, BattleStats
     level = PersonalStats["level"]
-    LevelMaxStats["MAXHP"] = level * 5 + 10
-    LevelMaxStats["MAXMP"] = level + 5 * 2
-    LevelMaxStats["MAXEXP"] = level * 20 + random.randint(0, level)
-    BattleStats["DMG"] = level * 2
-    BattleStats["AR"] = level * 1.5
-    BattleStats["RNGDMG"] = level * 2 + random.randint(0, 5)
+    BattleStats["DMG"] = round((level * 1.25) + 1)
+    BattleStats["AR"] = level
+    BattleStats["RNGDMG"] = level + random.randint(0, round(level * 1.5))
+    BattleStats["block"] = round(level * 1.5)
+    LevelMaxStats["MAXHP"] = level * 2 + 13
+    LevelMaxStats["MAXMP"] = level + 9
+    LevelMaxStats["MAXEXP"] = level * 15 + (level * 5)
 
 # Game Parts
 
@@ -302,8 +383,8 @@ def drawTopBar():
     print("-." * STwidth, end="")
     print(f"\n\tName: {name}\t\t   EX\t  //ESplash")
     print(f"\tHP: {hp}/{maxhp} MP: {mp}/{maxmp}\t\t PYTHON\t / /__ :)")
-    print(f"\tG]-{G} [S]-{S} [B]-{B}\t\t-.-.-.-./__  / (:")
-    print(f"\tLV: {level} EXP: {exp}/{maxexp}\t\t\t MAXIMA\t  / /  :)")
+    print(f"\t[G]-{G} [S]-{S} [B]-{B}\t\t-.-.-.-./__  / (:")
+    print(f"\t{level}LV | {exp}XP/{maxexp}\t\t\t MAXIMA\t  / /  :)")
     print(".-" * STwidth, end="", flush=True)
 
 def fakeLoadingScreen():
@@ -348,7 +429,12 @@ def fakeLoadingScreen():
 
 # Save Files
 
+def loadGame():
+    # TODO Load Game
+    pass
+
 def loadSave():
+    # TODO Update this with the new stats
     global PersonalStats, BattleStats, LevelMaxStats
     try:
         with open(savefile, "r") as file:
@@ -363,6 +449,7 @@ def loadSave():
             calculateStats()
         print("\n\n\tSave file found!")
         input("\n\t\tContinue?")
+        loadGame()
     except FileNotFoundError:
         print("\n\n\tSave file not found. Starting a new game.")
         input("\n\t\tContinue?")
@@ -386,16 +473,6 @@ def saveGame():
         file.write(f"{BattleStats['MP']}\n")
         file.write(f"{PersonalStats['level']}\n")
 
-def LOADorSAVE():
-    x = input("\n\t\t[ Load a save? Or Start anew? ]\n\t\t>> ( load/new ) ")
-    if x == "load":
-        loadSave()
-    elif x == "new":
-        firstBattles()
-    else:
-        print("\n\n\tInvalid input!")
-        LOADorSAVE()
-
 # Battle System
 
 def HealStats():
@@ -404,18 +481,11 @@ def HealStats():
     BattleStats["MP"] = LevelMaxStats["MAXMP"]
 
 def getDream():
-    # TODO Work on this feature!
-    print("\n\n\t\t\tYou walk through the Grasslands")
-    wait(2)
-    print("\t\t\tYou wonder...")
-    wait(2)
-    print("\t\t\tIs killing every monster worth it?")
-    wait(2)
-    print("\t\t\tThen a revelation comes to your mind")
-    wait(2)
-    print("\t\t\tWhat if...", end="", flush=True)
-    wait(1)
-    print("\t\t\tEverything is...")
+    dreamRNG = random.randint(0, 10)
+    dream = dreamlist[dreamRNG]
+    for line in dream:
+        print(line, end="", flush=True)
+        wait(1.5)
 
 def restPlace(n):
     if n == 0:
@@ -450,7 +520,59 @@ def restPlace(n):
     if n == 2:
         pass
 
+def equipQ(item):
+    global curGear
+    x = input("\n\t\t[ Equip or Put in inventory? (E/I) ] >> ").lower
+    if x == "I":
+        inventory.append(item)
+        
+    elif x == "E":
+        inventory.append(item)
+        curGear = item
 
+
+def shopMenu(x, n=1):
+    clear()
+    drawTopBar()
+    print("\n\n")
+    for sprite in range(len(x)):
+        print("\t\t\t" + x[sprite])
+    if n == 1:
+        menu = shop
+    elif n == 2:
+        menu = blacksmith
+    elif n == 3:
+        menu = royalarmory
+    wp1 = weapons[menu[0]]
+    wp2 = weapons[menu[1]]
+    ar1 = armors[menu[2]]
+    print(f"\n\t\t     [ Choose an item ]\n\t  [ {wp1["name"]} ] [ {wp2["name"]} ] [ {ar1["name"]} ]")
+    x = input("\n\t\t[ Pick an item ] >> ").lower()
+    if x == wp1["name"].lower():
+        clear()
+        drawTopBar()
+        print(f"\n\t\tYou have chosen the {wp1['name']}")
+        wait(2)
+        equipQ(wp1)
+    elif x == wp2["name"].lower():
+        clear()
+        drawTopBar()
+        print(f"\n\t\tYou have chosen the {wp2['name']}")
+        wait(2)
+        equipQ(wp2)
+    elif x == ar1["name"].lower():
+        clear()
+        drawTopBar()
+        print(f"\n\t\tYou have chosen the {ar1['name']}")
+        wait(2)
+        equipQ(ar1)
+    elif x == "exit":
+        
+        drawLocation()
+    else:
+        print(f"\n\t\t[ {x} is not an item! ]")
+        wait(2)
+        shopMenu(x, n)
 
 def drawLocation():
     if curlocation["locName"] == "village":
@@ -599,32 +721,17 @@ def BattleSystem(enemy, r=True):
     else:
         runchance = 0
     mp = BattleStats["MP"]
-    dmg = BattleStats["DMG"]
-    rng = BattleStats["RNGDMG"]
     clear()
     loadEnemy(enemy)
     print(
         f"\n\t\tActions:\n\n\t[ ATTACK ]\n\n\t[ MAGIC ]\n\n\t[ RUN ]\n\t>> ( {runchance}% )"
     )
-    x = input("\n\t\tChoose an action - ").strip().lower()
+    x = input("\n\t\tChoose an action - ").lower()
     if x == "attack":
-        critchance = random.randint(0, 10)
-        dealtdmg = dmg + random.randint(0, int(rng))
-        if critchance >= 7:
-            dealtdmg = dealtdmg * 2
-        if enemy["AR"] == 0:
-            donedmg = dealtdmg
-            enemy["HP"] -= dealtdmg
-        else:
-            donedmg = dealtdmg - enemy["AR"] // 2
-            enemy["HP"] -= donedmg
-        clear()
-        loadEnemy(enemy, 1)
-        print(f"\n\n\tYou dealt {donedmg} damage!")
+        calculateDMG(enemy)
         if enemy["HP"] <= 0:
             rewardSystem(enemy)
         else:
-            wait(2)
             enemyChoice(enemy, r)
     elif x == "magic":
         clear()
@@ -688,21 +795,34 @@ def firstBattles():
     wait(2)
     print("\n\t\tIt challenges you to test your skills.")
     wait(2)
-    input("\n\t\tYou stand for one final trial\n\n\t\tPress enter to battle!")
+    print("He gives you two weapons of choice...")
+    wait(2)
+    print("How do you wish to be armed?")
+    wait(1)
+    for _ in weapons:
+        x = input("A Sword or a Bow? > ").strip().lower()
+        if x == "sword":
+            curGear.append("sword")
+            break
+        elif x == "bow":
+            curGear.append("bow")
+            break
+        else:
+            print("\n\n\tInvalid input!")
     BattleSystem(GuardianOfAdventure, False)
 
 def initIntroSequence():
     clear()
     print("\n\n\n\t\tWelcome to exPYTHON")
-    wait(2)
+    wait(1.5)
     print("\t\tA game made in python")
-    wait(3)
+    wait(2)
     print("\n\t\tBased on a game named 'EXP MINIMA'")
-    wait(2)
+    wait(1.5)
     print("\t\tBy: Karmatic")
-    wait(2)
+    wait(1.5)
     print("\n\t\tRead the README.txt for more info")
-    wait(2)
+    wait(1.5)
     input("\n\t\tPress enter to continue...")
     clear()
     for _ in range(0, STwidth):
@@ -721,15 +841,27 @@ def initIntroSequence():
     wait(2)
     print("\n\n\t\tYou are about to enter")
     print("\t\tthe world of MAXIMA.")
-    wait(2)
+    wait(1.5)
     print("\n\t\tThere are many souls to pick.")
-    wait(2)
+    wait(1.5)
     print("\t\tLet us find, a soul fit for you.")
-    wait(3)
-    LOADorSAVE()
+    wait(2)
+    while True:
+        x = input("\n\t\t[ Load a save? Or Start anew? ]\n\t\t>> ( load/new ) ")
+        if x == "load":
+            loadSave()
+            break
+        elif x == "new":
+            firstBattles()
+            saveGame()
+            break
+        else:
+            print("\n\n\tInvalid input!")
+    loadGame()
 
 # Run Code
 
-fakeLoadingScreen()
+# fakeLoadingScreen()
+# initIntroSequence()
 
-initIntroSequence()
+BattleSystem(GuardianOfLife, False)
